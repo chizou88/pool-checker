@@ -5,6 +5,7 @@ const config = require('config');
 const cron = require('node-cron');
 const portscanner = require('portscanner');
 const request = require('request');
+const exec = require('child_process').exec;
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
@@ -59,6 +60,10 @@ const checkCurrentStatus = async() => {
             + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
             + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
       console.info(text);
+      exec('pm2 list', (err, stdout, stderr) => {
+        if (err) { console.log(err); }
+        console.log(stdout);
+      });
     }
   }
   for(const stratum of config.stratums) {
