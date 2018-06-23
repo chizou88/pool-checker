@@ -54,13 +54,13 @@ const checkCurrentStatus = async() => {
       break;
     }
 
+    let text = '';
+    text += `${web.url}\n`
+          + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
+          + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
+    console.info(text);
     if(!status.api) {
-      let text = '';
-      text += `${web.url}\n`
-            + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
-            + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
-      console.info(text);
-      exec('pm2 list', (err, stdout, stderr) => {
+      exec(`pm2 restart ${web.pm2id}`, (err, stdout, stderr) => {
         if (err) { console.log(err); }
         console.log(stdout);
       });
@@ -75,12 +75,16 @@ const checkCurrentStatus = async() => {
       if(status.stratum) { break; }
     }
 
-    if(!status.stratum) {
       let text = '';
       text += `${stratum.host}:${stratum.port}\n`
             + `Stratumポート: ${status.stratum ? '\u2705 正常' : '\u26a0 停止'}\n`
             + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
       console.info(text);
+    if(!status.stratum) {
+      exec(`pm2 restart ${status.pm2id}`, (err, stdout, stderr) => {
+        if (err) { console.log(err); }
+        console.log(stdout);
+      });
     }
   }
 };
