@@ -55,7 +55,7 @@ const checkCurrentStatus = async() => {
 
     if(!status.api) {
       let text = '';
-      text += `${pool.url}\n`
+      text += `${web.url}\n`
             + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
             + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
       console.info(text);
