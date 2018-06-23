@@ -1,0 +1,29 @@
+apiPath:
+  nomp: /api/stats
+timeout:
+  api: 10000
+  stratum: 1000
+maxRetry: 4
+webs:
+  -
+    name: みんなのプール
+    id: minnano-pool
+    url: https://minnano-pool.work
+    type: nomp
+    pm2id: 1
+stratums:
+  -
+    name: みんなのプール(bitzeny)
+    host: localhost
+    port: 3031
+    pm2id: 1
+  -
+    name: みんなのプール(koto)
+    host: localhost
+    port: 3131
+    pm2id: 2
+  -
+    name: みんなのプール(monacoin)
+    host: localhost
+    port: 3231
+    pm2id: 3
