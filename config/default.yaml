@@ -8,7 +8,7 @@ webs:
   -
     name: みんなのプール
     id: minnano-pool
-    url: https://minnano-pool.work
+    url: https://www.minnano-pool.work/
     type: nomp
     pm2id: 1
 stratums:
