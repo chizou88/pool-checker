@@ -81,7 +81,7 @@ const checkCurrentStatus = async() => {
             + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
       console.info(text);
     if(!status.stratum) {
-      exec(`pm2 restart ${status.pm2id}`, (err, stdout, stderr) => {
+      exec(`pm2 restart ${stratum.pm2id}`, (err, stdout, stderr) => {
         if (err) { console.log(err); }
         console.log(stdout);
       });
