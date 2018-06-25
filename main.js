@@ -43,18 +43,37 @@ const checkStratum = async(host, port) => {
 };
 
 const checkCurrentStatus = async() => {
+  let isReturn = false;
+  let text = '';
   for(const web of config.webs) {
     console.info(`[${new Date()}] Checking ${web.name}...`);
     const status = { api : false };
 
+    if(!${web.restarTarget}) {
+      status.api = true;
+    }
     for(let retry = 0; retry < MAX_RETRY; ++retry) {
       const api = await checkAPI(web.url + (config.apiPath[web.type]));
       if(api.error) { continue; }
       status.api = true;
+      for(const pool of web.pools) {
+        let hashRate = 0;
+        hashRate = api.json.pools.${pool.coin}.hashrate;
+        text += `${pool.coin}\n`
+             + `hashrate: hashRate\n`
+             + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
+        console.info(text);
+        if(!${pool.threshold} > hashRate) {
+          isReturn = true;
+          exec(`pm2 restart ${pool.pm2id}`, (err, stdout, stderr) => {
+          if (err) { console.log(err); }
+          console.log(stdout);
+          });
+        }
+      }
       break;
     }
 
-    let text = '';
     text += `${web.url}\n`
           + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
           + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
@@ -65,6 +84,10 @@ const checkCurrentStatus = async() => {
         console.log(stdout);
       });
     }
+  }
+
+  if (isReturn) { 
+    return; 
   }
   for(const stratum of config.stratums) {
     console.info(`[${new Date()}] Checking ${stratum.name}...`);

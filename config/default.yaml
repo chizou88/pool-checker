@@ -7,10 +7,20 @@ maxRetry: 4
 webs:
   -
     name: みんなのプール
-    id: minnano-pool
     url: https://www.minnano-pool.work
-    type: nomp
+    restarTarget: true
     pm2id: 1
+    pools:
+      -
+        coin: bitzeny
+        threshold: 1000
+        pm2id: 1
+      -
+        coin: bitzeny
+        pm2id: 2
+      -
+        coin: monacoin
+        pm2id: 3
 stratums:
   -
     name: みんなのプール(bitzeny)
