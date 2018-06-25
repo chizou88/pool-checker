@@ -1,5 +1,4 @@
-apiPath:
-  nomp: /api/stats
+apiPath: /api/stats
 timeout:
   api: 10000
   stratum: 1000
@@ -8,7 +7,7 @@ webs:
   -
     name: みんなのプール
     url: https://www.minnano-pool.work
-    restarTarget: true
+    restarTarget: false
     pm2id: 1
     pools:
       -
