@@ -56,6 +56,7 @@ const checkCurrentStatus = async() => {
       for(const pool of web.pools) {
         let hashRate = 0;
         hashRate = api.json.pools[pool.coin].hashrate;
+        text = '';
         text += `${pool.coin} `
              + `hashrate: ${hashRate} `
              + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
@@ -71,6 +72,7 @@ const checkCurrentStatus = async() => {
       break;
     }
     if(web.restarTarget) {
+      text = '';
       text += `${web.url}\n`
             + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
             + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
