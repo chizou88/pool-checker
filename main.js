@@ -49,9 +49,6 @@ const checkCurrentStatus = async() => {
     console.info(`[${new Date()}] Checking ${web.name}...`);
     const status = { api : false };
 
-    if(!web.restarTarget) {
-      status.api = true;
-    }
     for(let retry = 0; retry < MAX_RETRY; ++retry) {
       const api = await checkAPI(web.url + (config.apiPath));
       if(api.error) { continue; }
@@ -59,8 +56,8 @@ const checkCurrentStatus = async() => {
       for(const pool of web.pools) {
         let hashRate = 0;
         hashRate = api.json.pools[pool.coin].hashrate;
-        text += `${pool.coin}\n`
-             + `hashrate: hashRate\n`
+        text += `${pool.coin} `
+             + `hashrate: ${hashRate} `
              + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
         console.info(text);
         if(pool.threshold > hashRate) {
@@ -73,16 +70,17 @@ const checkCurrentStatus = async() => {
       }
       break;
     }
-
-    text += `${web.url}\n`
-          + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
-          + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
-    console.info(text);
-    if(!status.api) {
-      exec(`pm2 restart ${web.pm2id}`, (err, stdout, stderr) => {
-        if (err) { console.log(err); }
-        console.log(stdout);
-      });
+    if(web.restarTarget) {
+      text += `${web.url}\n`
+            + `Webダッシュボード: ${status.api ? '\u2705 正常' : '\u26a0 停止'}\n`
+            + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;
+      console.info(text);
+      if(!status.api) {
+        exec(`pm2 restart ${web.pm2id}`, (err, stdout, stderr) => {
+          if (err) { console.log(err); }
+          console.log(stdout);
+        });
+      }
     }
   }
 
