@@ -49,7 +49,7 @@ const checkCurrentStatus = async() => {
     console.info(`[${new Date()}] Checking ${web.name}...`);
     const status = { api : false };
 
-    if(!${web.restarTarget}) {
+    if(!web.restarTarget) {
       status.api = true;
     }
     for(let retry = 0; retry < MAX_RETRY; ++retry) {
@@ -58,7 +58,7 @@ const checkCurrentStatus = async() => {
       status.api = true;
       for(const pool of web.pools) {
         let hashRate = 0;
-        hashRate = api.json.pools.${pool.coin}.hashrate;
+        hashRate = api.json.pools.[pool.coin].hashrate;
         text += `${pool.coin}\n`
              + `hashrate: hashRate\n`
              + `(${(new Date()).toFormat('YYYY/MM/DD HH24:MI:SS')} JST)\n`;

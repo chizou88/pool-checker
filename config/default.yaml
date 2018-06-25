@@ -16,7 +16,7 @@ webs:
         threshold: 1000
         pm2id: 1
       -
-        coin: bitzeny
+        coin: koto
         pm2id: 2
       -
         coin: monacoin
